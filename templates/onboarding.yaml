@@ -171,17 +171,17 @@ Resources:
         RequireEachIncludedType: true
         ExcludeCharacters: '"@/\''`'
 
-  # Ec2User1InitialPassword:
-  #   Type: AWS::SecretsManager::Secret
-  #   Properties:
-  #     Name: !Sub onward/${Environment}/onboarding/ec2-user-1
-  #     Description: First-login password for ec2-user-1 (forced reset on sign-in)
-  #     GenerateSecretString:
-  #       SecretStringTemplate: '{"username":"ec2-user-1"}'
-  #       GenerateStringKey: password
-  #       PasswordLength: 20
-  #       RequireEachIncludedType: true
-  #       ExcludeCharacters: '"@/\''`'
+  Ec2User1InitialPassword:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub onward/${Environment}/onboarding/ec2-user-1
+      Description: First-login password for ec2-user-1 (forced reset on sign-in)
+      GenerateSecretString:
+        SecretStringTemplate: '{"username":"ec2-user-1"}'
+        GenerateStringKey: password
+        PasswordLength: 20
+        RequireEachIncludedType: true
+        ExcludeCharacters: '"@/\''`'
 
   Ec2User2InitialPassword:
     Type: AWS::SecretsManager::Secret
@@ -211,17 +211,17 @@ Resources:
       Tags:
         - {Key: Role, Value: storage-engineer}
 
-  # Ec2User1:
-  #   Type: AWS::IAM::User
-  #   Properties:
-  #     UserName: ec2-user-1
-  #     Groups: [!Ref ComputeEngineersGroup]
-  #     PermissionsBoundary: !Ref ComputeBoundary
-  #     LoginProfile:
-  #       Password: !Sub '{{resolve:secretsmanager:${Ec2User1InitialPassword}:SecretString:password}}'
-  #       PasswordResetRequired: true
-  #     Tags:
-  #       - {Key: Role, Value: compute-engineer}
+  Ec2User1:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: ec2-user-1
+      Groups: [!Ref ComputeEngineersGroup]
+      PermissionsBoundary: !Ref ComputeBoundary
+      LoginProfile:
+        Password: !Sub '{{resolve:secretsmanager:${Ec2User1InitialPassword}:SecretString:password}}'
+        PasswordResetRequired: true
+      Tags:
+        - {Key: Role, Value: compute-engineer}
 
   Ec2User2:
     Type: AWS::IAM::User
@@ -311,6 +311,8 @@ Outputs:
     Value: !Sub https://${AWS::AccountId}.signin.aws.amazon.com/console
   S3UserSecretArn:
     Value: !Ref S3UserInitialPassword
+  Ec2User1SecretArn:
+    Value: !Ref Ec2User1InitialPassword
   Ec2User2SecretArn:
     Value: !Ref Ec2User2InitialPassword
   ObserverBoundaryArn:
