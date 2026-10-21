@@ -311,8 +311,6 @@ Outputs:
     Value: !Sub https://${AWS::AccountId}.signin.aws.amazon.com/console
   S3UserSecretArn:
     Value: !Ref S3UserInitialPassword
-  Ec2User1SecretArn:
-    Value: !Ref Ec2User1InitialPassword
   Ec2User2SecretArn:
     Value: !Ref Ec2User2InitialPassword
   ObserverBoundaryArn:
